@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Khuất Như Khoa - Life Path</title>
     <style>
+
         * {
             margin: 0;
             padding: 0;
@@ -28,8 +29,45 @@
             overflow-x: hidden;
         }
 
+        /* --- STARRY BACKGROUND (Nền sao lấp lánh) --- */
+
+/* 1. Khung chứa sao: Ghim cố định toàn màn hình, nằm dưới cùng */
+#star-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 200%;
+    height: 200%;
+    z-index: -1; /* Nằm sau tất cả nội dung */
+    pointer-events: none; /* Không chặn click chuột */
+    overflow: hidden;
+}
+
+/* 2. Ngôi sao đơn lẻ */
+.star {
+    position: absolute;
+    border-radius: 50%;
+    background: white;
+    opacity: 0;
+    animation: twinkle var(--duration) ease-in-out infinite;
+    animation-delay: var(--delay);
+}
+
+/* 3. Hiệu ứng lấp lánh (Twinkle) */
+@keyframes twinkle {
+    0% { opacity: 0; transform: scale(0.5); box-shadow: 0 0 0 transparent; }
+    50% { opacity: 0.8; transform: scale(1.2); box-shadow: 0 0 6px rgba(255, 255, 255, 0.8); }
+    100% { opacity: 0; transform: scale(0.5); box-shadow: 0 0 0 transparent; }
+}
+
+
+section:not(.hero) {
+    position: relative;
+    z-index: auto;
+}
+
         /* Header */
-        header {
+        /* header {
             position: fixed;
             top: 0;
             width: 100%;
@@ -47,8 +85,190 @@
             justify-content: space-between;
             align-items: center;
             padding: 0 2rem;
-        }
+        } */
 
+/* --- PLANET NAVIGATION (REALISTIC & ACTIVE STATE) --- */
+
+.planet-nav {
+    position: fixed;
+    top: 50%;
+    right: 5px;
+    transform: translateY(-50%);
+    z-index: 50;
+    padding: 10px 5px;
+    background: rgba(0, 0, 0, 0.1); /* Nền siêu mờ */
+    border-radius: 15px 0 0 15px;
+    backdrop-filter: blur(2px);
+}
+
+.planet-nav .nav-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.planet-link {
+    text-decoration: none;
+    display: grid;
+    grid-template-columns: auto 60px;
+    align-items: center;
+    gap: 8px;
+    transition: transform 0.3s ease;
+}
+
+/* Label (Chữ) */
+.label {
+    color: #a0a0a0; /* Màu xám khi chưa active */
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: right;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+    transition: all 0.3s ease;
+}
+
+/* Container Hành tinh */
+.planet-link .planet {
+    justify-self: center;
+    border-radius: 50%;
+    position: relative;
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    /* Bóng đổ trong tạo khối cầu 3D chung */
+    box-shadow: inset -6px -6px 12px rgba(0,0,0,0.8), inset 2px 2px 5px rgba(255,255,255,0.2);
+    z-index: 2;
+    cursor: pointer;
+}
+
+/* --- 🎨 VẼ HÀNH TINH CHI TIẾT (REALISTIC CSS ART) --- */
+
+/* 1. Sao Thủy (Mercury): Xám, sần sùi lỗ chỗ */
+.planet-mercury {
+    width: 28px; height: 28px;
+    background-color: #b0b0b0;
+    background-image: 
+        radial-gradient(circle at 20% 20%, rgba(0,0,0,0.1) 0%, transparent 20%),
+        radial-gradient(circle at 60% 70%, rgba(0,0,0,0.15) 0%, transparent 15%),
+        radial-gradient(circle at 80% 30%, rgba(255,255,255,0.2) 0%, transparent 10%);
+}
+
+/* 2. Sao Kim (Venus): Vàng cam, mây dày đặc, bề mặt nóng */
+.planet-venus {
+    width: 32px; height: 32px;
+    background: radial-gradient(circle at 30% 30%, #ffdbac, #e6ac5c 40%, #bf8040 100%);
+}
+
+/* 3. Sao Hỏa (Mars): Đỏ đất nung, có chỏm băng ở cực */
+.planet-mars {
+    width: 30px; height: 30px;
+    background: radial-gradient(circle at 30% 30%, #ff7e5f, #c0392b);
+    overflow: hidden;
+}
+/* Chỏm băng cực bắc */
+.planet-mars::after {
+    content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 12px; height: 4px;
+    background: rgba(255,255,255,0.8);
+    border-radius: 50%;
+    filter: blur(1px);
+}
+
+/* 4. Sao Mộc (Jupiter): Sọc ngang đặc trưng + Đốm đỏ lớn */
+.planet-jupiter {
+    width: 50px; height: 50px;
+    background: 
+        repeating-linear-gradient(
+            -15deg,
+            #d4a373 0px, #d4a373 6px, /* Màu sáng */
+            #a1887f 6px, #a1887f 10px, /* Màu nâu nhạt */
+            #5d4037 10px, #5d4037 12px  /* Màu nâu đậm */
+        );
+    box-shadow: inset -10px -10px 25px rgba(0,0,0,0.8);
+}
+/* Đốm đỏ lớn (Great Red Spot) */
+.planet-jupiter::after {
+    content: ''; position: absolute; top: 60%; left: 30%;
+    width: 12px; height: 8px;
+    background: #8d4030;
+    border-radius: 50%;
+    box-shadow: inset 2px 2px 2px rgba(0,0,0,0.4);
+    opacity: 0.8;
+}
+
+/* 5. Sao Thổ (Saturn): Vàng nhạt + Vành đai chi tiết */
+.planet-saturn {
+    width: 38px; height: 38px;
+    background: radial-gradient(circle at 40% 40%, #fceabb, #c6a664);
+}
+.planet-saturn::before {
+    content: ''; position: absolute; width: 170%; height: 50%;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%) rotate(-20deg);
+    border-radius: 50%;
+    /* Tạo vành đai nhiều lớp bằng box-shadow */
+    box-shadow: 
+        0 0 0 3px rgba(198, 166, 100, 0.2), /* Vành trong mờ */
+        0 0 0 6px rgba(198, 166, 100, 0.6), /* Vành chính */
+        0 0 0 7px rgba(100, 80, 50, 0.3); /* Khe hở Cassini giả lập */
+    z-index: -1;
+}
+
+/* 6. Sao Thiên Vương (Uranus): Xanh ngọc lam nhạt, trơn */
+.planet-uranus {
+    width: 34px; height: 34px;
+    background: radial-gradient(circle at 30% 30%, #dcedc8, #4dd0e1);
+}
+
+/* 7. Sao Hải Vương (Neptune): Xanh dương đậm, có bão tối */
+.planet-neptune {
+    width: 34px; height: 34px;
+    background: radial-gradient(circle at 30% 30%, #64b5f6, #1565c0);
+}
+/* Vết tối lớn */
+.planet-neptune::after {
+    content: ''; position: absolute; top: 40%; right: 20%;
+    width: 8px; height: 4px;
+    background: #0d47a1;
+    border-radius: 50%;
+    filter: blur(1px);
+}
+
+
+/* --- ACTIVE & HOVER STATE LOGIC --- */
+
+/* Định nghĩa trạng thái "Sáng đèn" (Active hoặc Hover) */
+.planet-link:hover .label,
+.planet-link.active .label {
+    color: var(--accent); /* Chữ chuyển màu cam */
+    text-shadow: 0 0 8px var(--accent); /* Chữ phát sáng */
+    transform: translateX(-3px);
+}
+
+.planet-link:hover .planet,
+.planet-link.active .planet {
+    transform: scale(1.25) rotate(10deg); /* Phóng to */
+}
+
+/* Hiệu ứng hào quang (Glow) riêng khi Active/Hover */
+.planet-link.active .planet-mercury, .planet-link:hover .planet-mercury { box-shadow: 0 0 20px rgba(255, 255, 255, 0.6); }
+.planet-link.active .planet-venus,   .planet-link:hover .planet-venus   { box-shadow: 0 0 25px rgba(255, 219, 172, 0.6); }
+.planet-link.active .planet-mars,    .planet-link:hover .planet-mars    { box-shadow: 0 0 25px rgba(255, 107, 107, 0.7); }
+.planet-link.active .planet-jupiter, .planet-link:hover .planet-jupiter { box-shadow: 0 0 35px rgba(212, 163, 115, 0.7); }
+.planet-link.active .planet-saturn,  .planet-link:hover .planet-saturn  { box-shadow: 0 0 30px rgba(244, 228, 188, 0.6); }
+.planet-link.active .planet-uranus,  .planet-link:hover .planet-uranus  { box-shadow: 0 0 25px rgba(77, 208, 225, 0.7); }
+.planet-link.active .planet-neptune, .planet-link:hover .planet-neptune { box-shadow: 0 0 30px rgba(21, 101, 192, 0.8); }
+
+
+/* Dây nối trục vũ trụ */
+.planet-nav::before {
+    content: ''; position: absolute; top: 20px; bottom: 20px; right: 35px; 
+    width: 1px; background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.1), transparent); z-index: -1;
+}
+/* Responsive: Ẩn trên mobile */
+@media (max-width: 768px) {
+    .planet-nav { display: none; }
+}
         .logo {
             font-size: 1.5rem;
             font-weight: 700;
@@ -126,18 +346,19 @@
     left: 0;
     width: 100%;
     height: 100%;
-    pointer-events: none; /* Cho phép click xuyên qua */
-    z-index: 9999; /* Luôn nằm trên cùng */
-    opacity: 0.06; /* Độ rõ của hạt (0.05 - 0.1) */
-    /* SVG Noise Data URI (Nhẹ, không cần tải ảnh ngoài) */
+    pointer-events: none; 
+    z-index: 9999;
+    opacity: 0.06;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
 
 /* --- 2. PARTICLE CANVAS & HERO SETUP --- */
 .hero {
     position: relative;
-    background: var(--dark-bg); /* Đảm bảo nền tối */
-    overflow: hidden;
+    z-index: 2;
+    background: var(--dark-bg); 
+    min-height: 100vh;
+    display: flex;
 }
 
 #particleCanvas {
@@ -334,6 +555,8 @@
         }
 
         .card {
+            position: relative;
+            z-index: 10;
             background: var(--card-bg);
             padding: 2.5rem;
             border-radius: 20px;
@@ -345,6 +568,7 @@
         .card:hover {
             transform: translateY(-5px);
             box-shadow: 0 15px 50px rgba(212, 163, 115, 0.3);
+            z-index: 2000;
         }
 
         .card h3 {
@@ -365,16 +589,33 @@
         .achievements-list {
             list-style: none;
             padding: 0;
+             z-index: 1;
         }
 
-        .achievements-list li {
+        /* .achievements-list li {
             padding: 0.8rem 0;
             border-bottom: 1px solid rgba(212, 163, 115, 0.2);
             display: flex;
             align-items: center;
             gap: 1rem;
-        }
+        } */
 
+        .achievements-list li {
+    padding: 0.8rem 0;
+    border-bottom: 1px solid rgba(212, 163, 115, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    position: relative; /* Để làm điểm tựa cho ảnh bay */
+    cursor: pointer;
+    transition: color 0.3s, padding-left 0.3s;
+     z-index: 10001;
+}
+
+.achievements-list li:hover {
+    color: var(--accent);
+    padding-left: 10px; 
+}
         .achievements-list li:last-child {
             border-bottom: none;
         }
@@ -385,6 +626,55 @@
             font-weight: bold;
             font-size: 1.2rem;
         }
+.cloud-popup {
+    position: absolute;
+    
+    left: 180px; 
+    top: -90px;  /* Đẩy lên trên để ảnh nằm giữa dòng theo chiều dọc */
+    right: auto; /* Bỏ căn lề phải cũ */
+    
+    width: 350px;
+    height: 220px;
+    
+    border-radius: 12px;
+    
+    overflow: hidden;
+    box-shadow: 10px 20px 50px rgba(0, 0, 0, 0.5);
+    border: 4px solid #fff;
+    background: #1a1a1a;
+    z-index: 10002;
+    
+    /* Trạng thái ẩn */
+    opacity: 0;
+    visibility: hidden;
+    
+    /* Hiệu ứng xuất hiện: Trượt từ trái sang phải nhẹ */
+    transform: translateX(-20px) scale(0.9);
+    transform-origin: center left; /* Phóng to từ phía bên trái */
+    transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    pointer-events: none;
+}
+
+.cloud-popup img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* --- TRẠNG THÁI HOVER --- */
+.achievements-list li:hover .cloud-popup {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0) scale(1); 
+    z-index: 10002;
+}
+
+/* Responsive: Ẩn trên mobile */
+@media (max-width: 1024px) {
+    .cloud-popup {
+        display: none !important;
+    }
+}
 
         /* Free Time Section - Image Grid */
         .freetime-grid {
@@ -1025,24 +1315,69 @@
     </style>
 </head>
 <body>
-    <!-- <div class="noise-overlay"></div> -->
+        <div id="star-container"></div>
 
-    <!-- Header -->
-    <header>
-        <nav>
-            <div class="logo">KNK</div>
-            <ul class="nav-links">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#career">Career</a></li>
-                <li><a href="#freetime">Free Time</a></li>
-                <li><a href="#personality">Personality</a></li>
-                <li><a href="#becoming">Becoming</a></li>
-                <li><a href="#moments">Moments</a></li>
-                <li><a href="#gallery">Gallery</a></li>
-            </ul>
-        </nav>
-    </header>
 
+    <!-- Planet Navigation (Vertical Right) -->
+<nav class="planet-nav">
+    <ul class="nav-links">
+        <!-- 1. Home - Mercury (Sao Thủy) -->
+        <li>
+            <a href="#home" class="planet-link">
+                <span class="label">Intro</span>
+                <div class="planet planet-mercury"></div>
+            </a>
+        </li>
+
+        <!-- 2. Career - Venus (Sao Kim) -->
+        <li>
+            <a href="#career" class="planet-link">
+                <span class="label">Career</span>
+                <div class="planet planet-venus"></div>
+            </a>
+        </li>
+
+        <!-- 3. Free Time - Earth (Thay bằng Sao Hỏa cho đúng list 7 cái bạn yêu cầu) -->
+        <li>
+            <a href="#freetime" class="planet-link">
+                <span class="label">Free Time</span>
+                <div class="planet planet-mars"></div>
+            </a>
+        </li>
+
+        <!-- 4. Personality - Jupiter (Sao Mộc - To nhất) -->
+        <li>
+            <a href="#personality" class="planet-link">
+                <span class="label">Personality</span>
+                <div class="planet planet-jupiter"></div>
+            </a>
+        </li>
+
+        <!-- 5. Becoming - Saturn (Sao Thổ - Có vành đai) -->
+        <li>
+            <a href="#becoming" class="planet-link">
+                <span class="label">Becoming</span>
+                <div class="planet planet-saturn"></div>
+            </a>
+        </li>
+
+        <!-- 6. Moments - Uranus (Sao Thiên Vương) -->
+        <li>
+            <a href="#moments" class="planet-link">
+                <span class="label">Moments</span>
+                <div class="planet planet-uranus"></div>
+            </a>
+        </li>
+
+        <!-- 7. Gallery - Neptune (Sao Hải Vương) -->
+        <li>
+            <a href="#gallery" class="planet-link">
+                <span class="label">Gallery</span>
+                <div class="planet planet-neptune"></div>
+            </a>
+        </li>
+    </ul>
+</nav>
     <!-- Music Control -->
     <div class="music-control" id="musicControl">
         <svg viewBox="0 0 24 24" id="playIcon">
@@ -1065,7 +1400,11 @@
             <div class="hero-text">
                 <div id="greeting" class="greeting-text"></div>
 
-                <h1>Khuất Như Khoa</h1>                
+                <h1>Khuất Như Khoa</h1> 
+                
+                <div class="tagline">
+                    Chào cậu, cảm ơn cậu đã dành thời gian lướt qua đâyy. Đây sẽ là vài nét về cuộc sống, tam quan, sở thích cũng như 1 số khoảnh khắc của tớ!
+                </div>               
                 <div class="info-grid">
                     <div class="info-item">
                         <label>Ngày sinh</label>
@@ -1084,11 +1423,18 @@
                         <span>1. Hòa Lạc, Hà Nội <br></span>
                         <span>2. Cầu Giấy, Hà Nội</span>
                     </div>
+                    <div class="info-item">
+                        <label>Chiều cao - Cân nặng</label>
+                        <span>1m7 - 55kg</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Social Media</label>
+                        <span><a href="https://www.facebook.com/nhukhoa0612">Như Khoa</a></span>
+                    </div>
+                    
+                  
                 </div>
 
-                <div class="tagline">
-                    Chào cậu, cảm ơn cậu đã dành thời gian lướt qua đâyy. Đây sẽ là vài nét về cuộc sống, tam quan, sở thích cũng như 1 số khoảnh khắc của tớ!
-                </div>
 
             </div>
 
@@ -1117,15 +1463,42 @@ Mình muốn sau này những thứ do người Việt làm ra có thể đi xa,
             </div>
 
             <div class="card">
-                <h3>Tớ có ...</h3>
-                <ul class="achievements-list">
-                    <li>TOPIK 4</li>
-                    <li>TOEIC 925</li>
-                    <li>GPA 8.6/10</li>
-                    <li>Học bổng FPT Software Academy</li>
-                    <li>Học bổng Techcombank</li>
-                </ul>
+    <h3>Tớ có ...</h3>
+    <ul class="achievements-list">
+        <li>
+            TOPIK 4
+            <!-- Ảnh đám mây -->
+            <div class="cloud-popup">
+                <img src="topik.png" alt="TOPIK">
             </div>
+        </li>
+        <li>
+            TOEIC 925
+            <div class="cloud-popup">
+                <img src="toeic.png" alt="TOEIC">
+            </div>
+        </li>
+        <li>
+            GPA 8.6/10
+            <div class="cloud-popup">
+                <img src="bangdh.jpg" alt="GPA">
+            </div>
+        </li>
+        <li>
+            Học bổng FPT Academy
+            <div class="cloud-popup">
+                <img src="fsa.jpg" alt="FPT">
+            </div>
+        </li>
+        <li>
+            Học bổng Techcombank
+            <div class="cloud-popup">
+                <img src="cacban.jpg" alt="TCB">
+            </div>
+        </li>
+    </ul>
+</div>
+
         </div>
     </section>
 
@@ -1168,7 +1541,7 @@ Mình muốn sau này những thứ do người Việt làm ra có thể đi xa,
                 <div class="ft-icon">🌐</div>
                 <h3>Ngoại Ngữ</h3>
                 <div class="ft-content">
-                    <p>Học Tiếng Hàn & Tiếng Anh. Mở rộng tư duy qua ngôn ngữ mới.</p>
+                    <p>Chủ yếu là học Tiếng Hàn & Tiếng Anh. 1 phần vì công việc, 1 phần để mở rộng tư duy qua ngôn ngữ mới.</p>
                 </div>
             </div>
             
@@ -1177,7 +1550,7 @@ Mình muốn sau này những thứ do người Việt làm ra có thể đi xa,
                 <div class="ft-icon">💻</div>
                 <h3>Coding</h3>
                 <div class="ft-content">
-                    <p>Làm project, tìm hiểu công nghệ, cũng khá vuii.</p>
+                    <p>Làm project, tìm hiểu công nghệ mới, các cách làm mới cũng khá vuii.</p>
                 </div>
             </div>
             
@@ -1285,7 +1658,7 @@ Mình muốn sau này những thứ do người Việt làm ra có thể đi xa,
             <div class="goal-icon">💼</div>
             <div class="goal-content">
                 <h3>Sự nghiệp</h3>
-                <p>Tớ không quá đặt nặng vấn đề phải thành "ông này bà nọ", tớ biết đủ và cần đủ. Và trên hết tớ thích dành thời gian cho những người mình yêu thươn. </p>
+                <p>Tớ không quá đặt nặng vấn đề phải thành "ông này bà nọ", tớ biết đủ và cần đủ. Và trên hết tớ thích dành thời gian cho những người mình yêu thương. </p>
             </div>
         </div>
 
@@ -1553,6 +1926,52 @@ Mình muốn sau này những thứ do người Việt làm ra có thể đi xa,
         const modalIcon = document.getElementById('modalIcon');
         const modalText = document.getElementById('modalText');
 
+            /* =========================================
+       3. ACTIVE NAVIGATION ON SCROLL (PLANET LOGIC)
+       ========================================= */
+    
+    // Lấy danh sách các section và link
+    const sections = document.querySelectorAll('section');
+    const navLinks = document.querySelectorAll('.planet-link');
+
+    // ĐỔI TÊN BIẾN: observerOptions -> navObserverOptions
+    const navObserverOptions = {
+        root: null,
+        rootMargin: '-20% 0px -20% 0px', // Thu hẹp vùng nhận diện để chính xác hơn
+        threshold: 0.2 // Chỉ cần 20% section hiện ra là bắt đầu tính
+    };
+
+    // ĐỔI TÊN BIẾN: observer -> navObserver
+    const navObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // 1. Xóa class active ở tất cả link cũ
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                });
+
+                // 2. Lấy ID của section đang hiện
+                const id = entry.target.getAttribute('id');
+
+                // 3. Kích hoạt link tương ứng
+                // Kiểm tra id tồn tại để tránh lỗi null
+                if (id) {
+                    const activeLink = document.querySelector(`.planet-link[href="#${id}"]`);
+                    if (activeLink) {
+                        activeLink.classList.add('active');
+                    }
+                }
+            }
+        });
+    }, navObserverOptions); // Nhớ dùng biến đã đổi tên ở đây
+
+    // Bắt đầu theo dõi
+    sections.forEach(section => {
+        navObserver.observe(section);
+    });
+
+
+        
         function openModal(icon, text) {
             modalIcon.textContent = icon;
             modalText.textContent = text;
@@ -1764,6 +2183,53 @@ Mình muốn sau này những thứ do người Việt làm ra có thể đi xa,
     animate();
 
 
+        /* =========================================
+       4. STARRY BACKGROUND GENERATOR
+       ========================================= */
+    function createStars() {
+        const container = document.getElementById('star-container');
+        const starCount = 150; // Số lượng ngôi sao (tăng giảm tùy thích)
+
+        for (let i = 0; i < starCount; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            
+            // Random vị trí (0% - 100%)
+            const x = Math.random() * 100;
+            const y = Math.random() * 100;
+            
+            // Random kích thước (nhỏ xinh từ 1px đến 3px)
+            const size = Math.random() * 2 + 1; 
+            
+            // Random thời gian nhấp nháy (2s - 6s)
+            const duration = Math.random() * 4 + 2;
+            
+            // Random độ trễ (để chúng không nhấp nháy cùng lúc)
+            const delay = Math.random() * 5;
+
+            // Gán style
+            star.style.left = `${x}%`;
+            star.style.top = `${y}%`;
+            star.style.width = `${size}px`;
+            star.style.height = `${size}px`;
+            
+            // Set biến CSS để dùng trong keyframes
+            star.style.setProperty('--duration', `${duration}s`);
+            star.style.setProperty('--delay', `${delay}s`);
+
+            // Random màu: 80% trắng, 20% màu accent (vàng cam)
+            if (Math.random() > 0.8) {
+                star.style.background = 'var(--accent)';
+                star.style.boxShadow = `0 0 10px var(--accent)`;
+            }
+
+            container.appendChild(star);
+        }
+    }
+    
+    // Chạy hàm tạo sao
+    createStars();
     </script>
+
 </body>
 </html>
